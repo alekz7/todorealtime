@@ -19,7 +19,6 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/lib/auth";
-import { useToast } from "@/components/ui/use-toast";
 import { Card3D } from "@/components/ui/card-3d";
 
 const loginSchema = z.object({
@@ -40,7 +39,6 @@ export function AuthForm() {
   const [activeTab, setActiveTab] = useState<"login" | "register">("login");
   const [isLoading, setIsLoading] = useState(false);
   const { login, register } = useAuth();
-  const { toast } = useToast();
 
   const loginForm = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -63,18 +61,9 @@ export function AuthForm() {
     setIsLoading(true);
     try {
       await login(data.email, data.password);
-      toast({
-        title: "Success",
-        description: "You have been logged in",
-      });
+      console.log('Successfully logged in');
     } catch (error) {
       console.error("Login failed:", error);
-      toast({
-        title: "Login Failed",
-        description:
-          "We couldn't log you in. Please check your credentials and try again.",
-        variant: "destructive",
-      });
     } finally {
       setIsLoading(false);
     }
@@ -84,18 +73,9 @@ export function AuthForm() {
     setIsLoading(true);
     try {
       await register(data.name, data.email, data.password);
-      toast({
-        title: "Success",
-        description: "Your account has been created",
-      });
+      console.log('Successfully registered');
     } catch (error) {
       console.error("Registration failed:", error);
-      toast({
-        title: "Registration Failed",
-        description:
-          "We couldn't create your account. Please try again with a different email.",
-        variant: "destructive",
-      });
     } finally {
       setIsLoading(false);
     }
